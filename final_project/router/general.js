@@ -29,11 +29,42 @@ public_users.get("/", function (req, res) {
   return res.json({ message: "No books available" }).status(404);
 });
 
+// Get book list using async-await (simulated async operation)
+public_users.get("/books_async", async function (req, res) {
+  const books = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(books);
+    }, 1000);
+  });
+
+  if (books) {
+    return res.json(books, null, 2).status(200);
+  }
+  //Write your code here
+  return res.json({ message: "No books available" }).status(404);
+});
+
 // Get book details based on ISBN
 public_users.get("/isbn/:isbn", function (req, res) {
   const isbn = req.params.isbn.trim();
   if (books[isbn]) {
     res.json(books[isbn], null, 2).status(200);
+  }
+  //Write your code here
+  return res.json({ message: "Book not found" }).status(404);
+});
+
+// Get book details based on ISBN using async-await (simulated async operation)
+public_users.get("/isbn_async/:isbn", async function (req, res) {
+  const isbn = req.params.isbn.trim();
+  const book = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(books[isbn]);
+    }, 1000);
+  });
+
+  if (book) {
+    return res.json(book, null, 2).status(200);
   }
   //Write your code here
   return res.json({ message: "Book not found" }).status(404);
@@ -53,6 +84,24 @@ public_users.get("/author/:author", function (req, res) {
   return res.json({ message: "No books found for this author" }).status(404);
 });
 
+// Get book details based on author using async-await (simulated async operation)
+public_users.get("/author_async/:author", async function (req, res) {
+  const author = req.params.author.trim();
+  const booksByAuthor = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        Object.values(books).filter((book) => book.author === author)
+      );
+    }, 1000);
+  });
+
+  if (booksByAuthor.length > 0) {
+    return res.json(booksByAuthor, null, 2).status(200);
+  }
+  //Write your code here
+  return res.json({ message: "No books found for this author" }).status(404);
+});
+
 // Get all books based on title
 public_users.get("/title/:title", function (req, res) {
   const title = req.params.title.trim();
@@ -60,6 +109,22 @@ public_users.get("/title/:title", function (req, res) {
   const booksByTitle = Object.values(books).filter(
     (book) => book.title === title
   );
+  if (booksByTitle.length > 0) {
+    return res.json(booksByTitle, null, 2).status(200);
+  }
+  //Write your code here
+  return res.json({ message: "No books found with this title" }).status(404);
+});
+
+// Get all books based on title using async-await (simulated async operation)
+public_users.get("/title_async/:title", async function (req, res) {
+  const title = req.params.title.trim();
+  const booksByTitle = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(Object.values(books).filter((book) => book.title === title));
+    }, 1000);
+  });
+
   if (booksByTitle.length > 0) {
     return res.json(booksByTitle, null, 2).status(200);
   }
