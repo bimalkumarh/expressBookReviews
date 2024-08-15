@@ -13,7 +13,7 @@ public_users.post("/register", (req, res) => {
 
   if (isValid(username)) {
     users.push({ username, password });
-    res.json({ message: "User registered successfully" });
+    return res.json({ message: "User registered successfully" });
   }
 
   //Write your code here
@@ -23,7 +23,7 @@ public_users.post("/register", (req, res) => {
 // Get the book list available in the shop
 public_users.get("/", function (req, res) {
   if (books) {
-    res.json(books, null, 2).status(200);
+    return res.json(books, null, 2).status(200);
   }
   //Write your code here
   return res.json({ message: "No books available" }).status(404);
