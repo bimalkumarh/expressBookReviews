@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const customer_routes = require("./router/auth_users.js").authenticated;
 const genl_routes = require("./router/general.js").general;
-
+const { SECRET_KEY } = require("./utils.js");
 const app = express();
 
 app.use(express.json());
@@ -27,6 +27,8 @@ app.use("/customer/auth/*", function auth(req, res, next) {
     } else {
       return res.json({ message: "Invalid token" }).status(401);
     }
+  } else {
+    return res.json({ message: "Unauthorized" }).status(401);
   }
   //Write the authenication mechanism here
 });

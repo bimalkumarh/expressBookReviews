@@ -2,11 +2,9 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 let books = require("./booksdb.js");
 const regd_users = express.Router();
+const { SECRET_KEY } = require("../utils.js");
 
 let users = [];
-const SECRET_KEY =
-  "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcyMzcxODc2MywiaWF0IjoxNzIzNzE4NzYzfQ.NWTP8osd1YlJ71K2GRDuQdVryDcjgI7PmUoumHXNcC4";
-
 const isValid = (username) => {
   let validUser = users.filter((user) => user.username === username);
   if (validUser.length > 0) {
@@ -34,11 +32,9 @@ regd_users.post("/login", (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
   if (authenticatedUser(username, password)) {
-    let token = jwt.sign(
-      { username: username },
-      SECRET_KEY,
-      { expiresIn: "1h" }
-    );
+    let token = jwt.sign({ username: username }, SECRET_KEY, {
+      expiresIn: "1h",
+    });
     req.session.token = token;
     return res.json({ message: "Login successful", token: token });
   }
